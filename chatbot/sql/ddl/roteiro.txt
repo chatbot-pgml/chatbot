@@ -1,0 +1,18 @@
+
+
+
+1. engenharia de prompt de sistema 
+
+2. encontrar um texto maior para fazer, RAG
+
+3. fazer testes de inferencia
+
+4. implementacoes: 
+	- criar indice para o campo de embed
+	- criar uma funcao para colocar a query de inferencia, e outra funcao para colocar a query de chunks
+	- apagar as colunas desnecessarias --------OK
+	- gerar script de ddl --------OK
+	- incluir historico dos chats anteriores
+	- criar mecanismo para limitar o tamanho da janela de contexto no prompt 8k, no caso do llama3
+	- pesquisar outras estrategias de RAG (p.ex sumarizar n documentos pra criar um unico documento para RAG )
+	- formatar a resposta do modelo com chr(13)

@@ -1,0 +1,23 @@
+
+
+
+
+
+
+
+phi3: 
+<|system|>
+{$system_prompt}<|end|>
+<|user|>
+{$context} {$question}<|end|>
+<|assistant|>
+
+
+mistral:
+<s> [INST] {$system_prompt} [/INST] {$answer} </s> [INST] {$context} {$question} [/INST]
+
+
+llama3:
+<|begin_of_text|><|start_header_id|>system<|end_header_id|> {$system_prompt}<|eot_id|>
+<|start_header_id|>user<|end_header_id|> {$context} {$question}<|eot_id|>
+<|start_header_id|>assistant<|end_header_id|>{$answer}<|eot_id|>

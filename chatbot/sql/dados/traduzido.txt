@@ -1,0 +1,822 @@
+J32799PT
+Guia do Sistema de Informação Laboratorial (LIS)
+Sistema Integrado VITROS® 5600
+Sistema de Química VITROS® 4600 
+Sistema de Imunodiagnóstico VITROS® 3600
+Sistema Integrado VITROS® XT 7600
+Sistema de Química VITROS® XT 3400 
+Exportação autorizada sob licença geral GTDA (General Technical Data Available) 
+IMPORTANTE
+As informações aqui contidas baseiam-se na experiência e nos conhecimentos relativos ao
+e conhecimentos relacionados com o assunto adquiridos pela Ortho Clinical Diagnostics antes da publicação.
+A Ortho Clinical Diagnostics reserva-se o direito de alterar estas informações sem aviso prévio.  
+Todos os nomes de produtos e empresas são marcas comerciais™ ou marcas registadas
+® marcas registadas dos respectivos
+respetivos detentores.
+ © Orth o Clinical Diagnostics 2018 - 2022. Todos os direitos reservados.
+Pub. N.º J32799 iii 
+2022-05-25Tabela de conteúdos
+1. INTRODUÇÃO .................................................................................................................. ....................... 1  
+1.1 Âmbito de aplicação ......................................................................................................................... ...................................... 1  
+1.2 Histórico de revisões .............................................................................................................. ................................ 1  
+1.3 Definições ................................................................................................................... .................................... 8  
+1.4 Referências .................................................................................................................... ................................. 11  
+2. DESC R IÇ ÃO GERAL ........................................................................................................... ........... 12 
+2.1 Funç ões ..................................................................................................................... .................................. 12  
+2.2 Visão geral das operações .......................................................................................................... ......................... 13  
+2.2.1 Descarregar programas de amostra ...................................................................................................... .............. 13  
+2.2.2 Carregar resultados de pacientes ........................................................................................................ ..................... 13  
+2.2.3 Consulta ao anfitrião .................................................................................................................... ........................... 13  
+2.2.4 Erro no encaminhamento ................................................................................................................ ......................... 13  
+2.2.5 Consulta de inventário ............................................................................................................... ......................... 13  
+2.2.6 Mensagens assíncronas ......................................................................................................... .................. 13  
+2.2.7 Consulta do estado do instrumento ....................................................................................................... .................... 14  
+2.2.8 Estado de conclusão do teste ........................................................................................................ ..................... 14  
+2.3 Cons truções de projeto ............................................................................................................ ............................ 14  
+2.4 Pressupostos, dependências e riscos resultantes ................................................................................. ........ 14 
+3. ESPECIFICAÇÕES DE COMUNICAÇÃO ............................................................................................... 15  
+3.1 Interfaces físicas ......................................................................................................................................... 15  
+3.1.1 Interface física Ethern et ................................................................................................... ................... 15  
+3.1.2 Interface física de série ..................................................................................................... ..................... 15  
+3.2 Comunicações ASTM ........................................................................................................... ..................... 16  
+3.2.1 Comunicações em série ASTM Datalink ........................................................................................... ........ 16 
+3.2.2 Comunicações Ethernet ASTM Datalink ......................................................................................... ...... 16 
+3.3 Comunicações HL7 .................................................................................
+3.3 Comunicações HL7 ............................................................................................................ ....................... 17  
+3.3.1 Comunicações HL7 MLLP ....................................................................................................... ............. 17  
+4. ESPECIFICAÇÕES DE PROCESSAMENTO ..................................................................................................... ..... 18 
+4.1 Reconhecimento de mensagens HL7 .................................................................................................. .............. 18  
+4.2 Descarregamento de programas de amostra ................................................................................................... ................. 18  
+4.3 Auditoria e armazenamento de programas de amostra .......................................................................................... .............. 19  
+4.3.1 Campos suportados .............................................................................................................. ......................... 19  
+4.3.2 Verificação do programa de amostras LIS ............................................................................................... ............. 21 Guia do Sistema de Informação Laboratorial (LIS) 
+Pub. N.º J32 799 
+iv 2022-05-25 4.3.3 Armazenamento de programas de amostra ....................................................................................................... .................. 22  
+4.3.4 Anexo do LIS .................................................................................................................... ........................... 25  
+4.4 Carregando Registros de Resu ltados ............................................................................................................................. 26  
+4.5 Consulta ao anfitrião .................................................................................................................... ................................ 28  
+4.5.1 Func ionalidade básica ................................................................................................................................... 28  
+4.5.2 Temporizador da Consulta ao Anfitrião .............................................................................................................. ....................... 28  
+4.5.3 Envio e receção de mensagens ................................................................................................ ............. 29  
+4.5.4 Prioridade da consulta do anfitrião ........................................................................................................... ....................... 29  
+4.6 Consulta de inventário ............................................................................................................... ............................. 30  
+4.7 Notificações assíncronas .................................................................................................... ...................... 31  
+4.7.1 Actualizações de estatísticas de automatização ..................................................................................................... ................. 31  
+4.7.2 Mensagens de erro ................................................................................................................ ........................ 31  
+4.7.3 Mensagens de transferência ................................................................................................................................. 31  
+4.7.4 Mensagens de estado ............................................................................................................... ......................... 32  
+4.8 Mensagens de status de conclusão do teste ............................................................................................... .................. 32  
+4.9 Mensagens de estado do analisador ...................................................................................................... ....................... 32  
+5. ESPECIFICAÇÕES DAS MENSAGENS......................................................................................................... ........ 33 
+5.1 Especificações de registos comuns .................................................................................................. .................. 33  
+5.1.1 Geral ..................................................................................................................................................... 33  
+5.1.2 Fl ags de resultados .................................................................................................................. ............................ 33  
+5.1.3 Estado da calibração ............................................................................................................ ......................... 34  
+5.1.4 Estado da regeneração do fluido .......................................................................................................... ....................... 35  
+5.1.5 Nível de gravidade ..............................................................
+5.1.6 Tipo de inventário ................................................................................................................ .......................... 35  
+5.1.7 Tipo de reprocessamento ............................................................................................................. ....................... 35  
+5.1.8 Tipo de ponto de medição ........................................................................................................... ...................... 36  
+5.2 Mensagens ASTM ........................................................................................................................................... 36  
+5.2.1 Estrutura da mensagem de descarregamento da encomenda .............................................................................................. .......... 36 
+5.2.2 Estrutura da mensagem de carregamento de resultados ............................................................................................... ............. 37  
+5.2.3 Estrutura da mensagem de consulta/anulação de consulta do anfitrião ..................................................................................... ..... 40 
+5.2.4 Estrutura da mensagem de resposta a uma consulta do anfitrião falhada................................................................................... ... 40 
+5.2.5 Estrutura da mensagem de consulta do inventário ............................................................................................. ............ 41 
+5.2.6 Estrutura da mensagem de resposta à consulta de inventário com falha ............................................................................. . 41 
+5.2.7 Estrutura da mensagem de resposta do inventário .......................................................................................... .......... 41 
+5.2.8 Estrutura da mensagem de notificação de configuração de automação ..................................................................... 4 2 
+5.2.9 Estrutura da mensagem de notificação de erro .......................................................................................... ............ 42 
+5.2.10 Estrutura da mensagem de notificação de mensagem de descarregamento ............................................................................... . 42 Guia do Sistema de Informação Laboratorial (LIS) 
+Pub. No. J32799 v 
+2022-05-25 5.2.11 Estrutura da mensagem de consulta de estado ................................................................................................ ............... 43  
+5.2.12 Estrutura da mensagem de resposta à consulta de estado ....................................................................................... ........ 43 
+5.2.13 Estrutura da mensagem de consulta do estado de conclusão do ensaio ................................................................................ .... 43 
+5.2.14 Estrutura da mensagem de estado de conclusão do teste ...................................................................................... ........ 44 
+5.3 Registos ASTM .................................................................................................................. ............................ 44  
+5.3.1 Registo ASTM H Heade r .......................................................................................................... ................. 46  
+5.3.2 Registo ASTM L Traile r Reco rd ......................................................................................................... ................... 47  
+5.3.3 ASTM P Registo do doente ............................................................................................................................ 47  
+5.3.4 ASTM O Registo de encomendas ........................................................................................................... .................. 49  
+5.3.5 Registo de resultados ASTM R .......................................................................................................... ................... 51  
+5.3.6 Registo de comentários ASTM C ......................................................................................................... ............... 54  
+5.3.7 Registo de pedido ASTM Q ......................................................................................................... ................. 55  
+5.3.8 Registo de resultados alargados ASTM M/X ............................................................................................... .......... 56 
+5.3.9 Registo de configuração da automatização ASTM M/A ...................................................................................... ... 57 
+5.3.10 Registo de consulta do inventário ASTM M/I ............................................................................................... ........... 57 
+5.3.11 Registo de inventário de reagentes ASTM M/R ............................................................................................. ........ 58 
+5.3.12 Registo de inventário de diluentes ASTM M/D ............................................................................................. ......... 59 
+5.3.13 Registo de inventário de consumíveis a granel ASTM M/B
+5.4.2 Estrutura da mensagem de pedido de laboratório HL7 OML .................................................................................... . 69 
+5.4.3 Estrutura da mensagem HL7 ORL Laboratory Order Resp onse ...................................................................... 70  
+5.4.4 HL7 OUL Unsolicited Observa tion Message St ructure (Estrutura da mensagem de observação não solicitada) ........................................................................... 7 2 
+5.4.5 Estrutura da mensagem de consulta do anfitrião HL7 QBP_ZOS ....................................................................................... 75  
+5.4.6 HL7 RSP_ZOS Estrutura da mensagem de resposta à consulta do anfitrião ........................................................................ 77  
+5.4.7 HL7 QCN Host Query Can cel Message Structure ...................................................................................  78 
+5.4.8 HL7 INR Equipment Inventory Re quest Message Structure ..................................................................... 78  
+5.4.9 Estrutura da mensagem de atualização do inventário do equipamento HL7 INU ..................................................................... 79  
+5.4.10 Estrutura da mensagem de notificação de equipamento HL7 EAN ..............................................................................  80 
+5.5 Segmentos de mensagens HL7 .......................................................................................................... ...................... 81  
+5.5.1 Erro (ERR) ................................................................................................................... ........................... 82 Guia do Sistema de Informação Laboratorial (LIS) 
+Pub. N.º J32 799 
+vi 2022-05-25 5.5.2 Equipamento fora de controlo (EQU) ........................................................................................................ .................. 83  
+5.5.3 Inventário de cauda (IN V) ........................................................................................................ ...................... 83  
+5.5.4 Aviso de receção de mensagem (MSA) ................................................................................................. .......... 85 
+5.5.5 Cabeçalho da mensagem (MSH) .......................................................................................................... ................. 86  
+5.5.6 Notification De tail (N DS) ..................................................................................................... .................... 88  
+5.5.7 Notas e comentários (NTE) ...................................................................................................... ............... 89  
+5.5.8 Pedido de Observação (OBR) ..................................................................................................... ................ 89  
+5.5.9 Resultado da observação (OBX) ........................................................................................................................ 91  
+5.5.10 Ordem comum (ORC) ............................................................................................................ ................. 93  
+5.5.11 ID do doente (PID) .............................................................................................................. ......................... 95  
+5.5.12 Visita do doente (PV1) .................................................................................................................................... 98  
+5.5.13 Detalhes da confirmação da consulta (QAK) ........................................................................................... ..... 100 
+5.5.14 Pormenores de identificação da consulta (QID) ............................................................................................ ............ 100  
+5.5.15 Pormenores da definição dos parâmetros da consulta (QPD) ...................................................................................... ..... 101 
+5.5.16 Pormenores do parâmetro de controlo da resposta (RCP) ...................................................................................... .... 102 
+5.5.17 Pormenores do contentor de espécimes (SAC) .............................................................................................. .......... 102 
+5.5.18 Espécime (SPM) ................................................................................................................ ..................... 104  
+5.5.19 Resultados alargados do segmento Z (ZER) .............................................................................................. .......... 106
+APÊNDICE A NOTAS ......................................................................................................................... ........... 107  
+APÊNDICE B CÓDIGOS DE ANALITOS .................................................................................................................... 108  
+APÊNDICE C CÓDIGOS DOS DILUENTES .................................................................................................................  122 
+APÊNDICE D CLASSIFICAÇÃO DOS RESULTADOS
+APÊNDICE E UNIDADES PADRÃO E CONVENCIONAIS PARA ENSAIOS .............................................. 125  
+APÊNDICE F CÓDIGOS DE RESULTADOS ........................................................................................................................ 131  
+APÊNDICE G ÍNDICES DE AMOSTRAS SINALIZADORES DA LISTA .............................................................. 141  
+APÊNDICE H MENSAGENS DE DESCARREGAMENTO ................................................................................................... 142  
+APÊNDICE I INTERFACES MECÂNICAS/ELÉCTRICAS PARA COMUNICAÇÕES EM SÉRIE .... 145  
+APÊNDICE J COMUNICAÇÕES DE REDE ATRAVÉS DE ETHERNET ............................................. 150  
+APÊNDICE K REGISTO DO ESTADO DO INSTRUMENTO ASTM M/S MAPEAMENTO DOS PORMENORES DO ESTADO ........... 151 Guia do Sistema de Informação Laboratorial (LIS) Introdução  
+Pub. N.º J32799 1 
+2022-05-25 Guia do Sistema de Informação Laboratorial (LIS) 
+1. Introdução 
+O Sistema de Informação Laboratorial (LIS) refere-se aos subsistemas que suportam a capacidade de 
+programar amostras de doentes remotamente no sistema, transferir dados relativos à demografia do doente e do médico 
+demográficos do doente e do médico, dados de controlo de qualidade e consultar outro sistema para obter amostras previamente programadas.  
+O LIS inclui o Sistema Integrado VITROS  5600 (VITROS  5600), o Sistema Integrado VITROS® XT 
+7600 (VITROS® XT 7600), o Sistema Químico VITROS  4600 (VITROS 
+4600), o Sistema Químico VITROS® XT 3400 (VITROS® XT 3400), ou o Sistema de Imunodiagnóstico VITROS  
+3600 (VITROS  3600); o sistema de Computador de Laboratório; e o hardware que liga os sistemas. 
+hardware que liga os sistemas. 
+Nota: Nem todos os produtos e sistemas estão disponíveis em todos os países. 
+1.1 Âmbito de aplicação 
+Este documento contém todas as especificações para ajudar no desenvolvimento de comunicações entre o 
+VITROS 5600 Sistema Integrado, o Sistema Integrado VITROS® XT 7600, o Sistema de Química VITROS  
+4600 Sistema Químico, o Sistema Químico VITROS® XT 3400 ou o Sistema de Imunodiagnóstico VITROS  3600 
+Sistema de Imunodiagnóstico e o Computador de Laboratório. Os protocolos de comunicação suportados 
+suportados incluem ASTM e HL7. 
+1.2 Histórico de revisões 
+As barras de alterações nas margens do documento indicam a localização exacta das alterações mais recentes. 
+alterações mais recentes. As eliminações não são assinaladas. 
+Secção Emitida 
+Número da secção Título da secção Detalhes da revisão 
+2022-05-25 2.2.6.4 
+ Registo do estado do instrumento 
+ Adicionada a resposta do sistema à consulta do 
+Estado do sistema/subsistema. 
+ 2.2.7 
+ Consulta do estado do instrumento 
+ Adicionada a resposta do sistema à consulta do estado do 
+Estado do sistema/subsistema. 
+ 2.2.8 Estado de conclusão do teste Adicionada resposta do sistema à consulta sobre o tempo até 
+resultado para a amostra. 
+ 4.7.4 Mensagens de estado Adicionada resposta do sistema à consulta do estado do 
+Estado do sistema/subsistema. 
+ 4.8 Estado de conclusão do ensaio 
+Mensagens Adicionada a resposta do sistema à consulta sobre a hora do 
+resultado para a amostra. 
+ 4.9 Mensagens de estado do analisador Adicionada a resposta do sistema à consulta do estado do 
+Estado do sistema/subsistema. 
+ 5.2.11 Mensagem de consulta de estado 
+Estrutura Adicionados pormenores da estrutura da mensagem. 
+ 5.2.12 Resposta da consulta de estado 
+Estrutura da mensagem Adicionados detalhes da estrutura da mensagem. 
+ 5.2.13 Consulta de status de conclusão de teste 
+Estrutura da mensagem Adicionados pormenores sobre a estrutura da mensagem. Introdução Guia do Sistema de Informação Laboratorial (LIS) 
+ Pub. N.º J32799 
+2 2022-05-25 Secção emitida 
+Número da secção Título da secção Detalhes da revisão 
+ 5.2.14 Estado de conclusão do ensaio 
+Estrutura da mensagem de resposta Adicionados pormenores sobre a estrutura da mensagem. 
+ 5.3.16 Mensagem de consulta do estado ASTM 
+Registo Adicionada tabela com detalhes do registo. 
+ 5.3.17 Registo da mensagem de estado do instrumento ASTM M/S 
+Registo Adicionado quadro com pormenores do registo. 
+ 5.3.18 Registo de mensagem de consulta do estado de conclusão do ensaio ASTM M/Q
+Completion Status Query Message Record Adicionada tabela com detalhes do registo. 
+ 5.3.19 ASTM M/T Mensagem de estado de conclusão do ensaio 
+Mensagem de estado Adicionado quadro com pormenores do registo. 
+ Apêndice K ASTM M/S Estado do instrumento 
+Mapeamento dos detalhes do estado do registo Detalhes adicionais para o campo 16 de 5.3.17. 
+2021-05-24 Apêndice B Códigos de analito Adicionado Código de analito 100 CV2G, 101 
+CV2T, 102 CVG2, 103 CVT2, 104 IL-6, 105 CVGQN, 106 CV2TN, 107 BhCG2*, 
+108 CEA2*, 109 CKMB2*, 110 Prol2*, 
+111 Ferr2*, 359 A1C1*, 543 uCRP* e 544 sCRP*. 
+ Apêndice D Classificação dos resultados adicionados 100 CV2G, 101 CV2T, 102 CVG2, 
+103 CVT2, e 106 CV2TN à Tabela de Classificação de Resultados 
+ Apêndice E Unidades padrão e convencionais 
+Unidades para ensaios Adicionados A1C1*, BhCG2*, CEA2*, 
+CKMB2*, CV2G, CV2T, CV2TN, CVG2, CVT2, CVGQN, Ferr2*, IL-6, Prol2*, sCRP* e uCRP*. 
+ Apêndice F Códigos de resultados Adicionado o código HL Hemoglobina baixa. 
+2020-10-17 5.3.11 
+ 
+5.5.3 Inventário de reagentes ASTM M/R 
+Registo 
+Detalhe do inventário (INV) Atualizado de "reservedfluid3" para "SWAB" 
+Apêndice B Códigos de analito Adicionado o código de analito 091 CV2Ag. 
+Removido "*" (Produto em desenvolvimento) de aHTLV. 
+Atualizado "Reserved Fluid 3" (Fluido reservado 3) para "SWAB". 
+Apêndice D Classificação dos resultados Adicionado CV2Ag à tabela de classificação dos resultados. 
+Tabela. Removido "*" (Produto em desenvolvimento) de aHTLV. 
+Apêndice E Unidades padrão e convencionais para ensaios 
+Unidades para Ensaios Adicionado CV2Ag. Removido "*" (Produto 
+em desenvolvimento) de umHTLV. Guia do Sistema de Informação Laboratorial (LIS) Introdução  
+Pub. N.º J32799 3 
+2022-05-25 Secção emitida 
+Número da secção Título da secção Detalhes da revisão 
+2020-04-24 Apêndice B Códigos de analitos adicionados Códigos de analitos 087 CoV2G e 089 
+CoV2T. 
+Actualizada a declaração de "Para todos os ensaios, 
+disponibilidade do ensaio está sujeita a requisitos 
+requisitos regulamentares locais." para "Os ensaios 
+Os ensaios listados na tabela estão sujeitos a requisitos regulamentares locais e podem não estar disponíveis em todas as regiões." 
+Apêndice D Classificação de resultados Adicionados CoV2G e CoV2T à tabela de classificação de resultados. 
+Tabela de classificação de resultados. 
+Apêndice E Unidades padrão e convencionais 
+Unidades para ensaios Adicionados CoV2G e CoV2T. 
+2020-03-05 Apêndice B Códigos de analitos Atualizado o código de ensaio para PCT de 085 para 
+086. 
+2019-05-29 Apêndice B Códigos de analitos Adicionados os códigos de analitos 035 TSH3,  
+052 NT-proBNP II, 053 aHTLV e  
+085 PCT. 
+Apêndice D Classificação de resultados Adicionado aHTLV à tabela de classificação de resultados 
+Tabela. 
+Apêndice E Unidades padrão e convencionais 
+Adicionados aHTLV, NT-proBNP II, PCT e TSH3. 
+TSH3. 
+2019-03-28 Apêndice B Códigos de analitos Adicionado o código de analito 069 HIV Combo,  
+082 hs Troponina I e 083 Anti-T.cruzi. 
+Apêndice D Classificação dos resultados Adicionados Anti-T.cruzi e HIVc à 
+Tabela de classificação de resultados. 
+Apêndice E Unidades padrão e convencionais para ensaios 
+Adicionadas aTCRU e hsTnI. 
+  Pequenas actualizações editoriais. 
+2017-12-19 - - Adicionado o Sistema Químico VITROS® XT 3400 
+VITROS® XT 3400 e Sistema Integrado VITROS® XT 7600 
+VITROS® XT 7600 à página de título e aos rodapés. 
+ 1 e 1.1 Introdução e âmbito de aplicação Adicionado o Sistema Químico VITROS® XT 3400 
+VITROS® XT 3400 e Sistema Integrado VITROS® XT 7600 
+VITROS® XT 7600 e adicionado Nota: Nem todos os produtos 
+produtos e sistemas não estão disponíveis em todos os países. 
+ 5.3.13 e 
+5.5.3 ASTM M/B Bulk 
+Registo de Inventário de Consumíveis 
+e Detalhe do Inventário (INV) Adicionado VITROS® XT 3400 
+ 5.5.13 Detalhes de confirmação de consulta 
+(QAK) Correção da ortografia de defined 
+ Apêndice B, 
+Apêndice C e Apêndice E Códigos de analito; Códigos de diluente; 
+Unidades padrão e convencionais para ensaio Adicionado XT 3400 e XT 7600 ao texto acima da tabela e às colunas da tabela 
+Introdução Guia do Sistema de Informação Laboratorial (LIS) 
+ Pub. N.º J32799 
+4 2022-05-25 Secção emitida 
+Número da secção Título da secção Detalhes da revisão 
+ Apêndice F Códigos de resultados Adicionado MF (Multiple Reagent Formats) à 
+à tabela 
+ Apêndice H Mensagens de descarregamento Removida a menção de sistemas específicos da coluna Condição no Número de Código 
+da coluna "Condição" na linha "Número de código 
+14, uma vez que se aplica a todos os sistemas; em vez disso, foi alterado para "sistema de destino". 
+ Apêndice I 
+e Apêndice J Interfaces mecânicas/eléctricas 
+Interfaces para comunicações em série 
+Série; Ligações de rede 
+Ligações de rede através de Ethernet Adicionado o Sistema VITROS® XT 7600 e o Sistema 
+Sistema VITROS® XT 3400 ao texto acima da tabela 
+ Apêndice J Comunicações de rede 
+através de Ethernet Adicionado VITROS® XT 7600 e VITROS® 
+XT 3400 
+2017-07-10 Apêndice B 
+ 
+  
+ 
+ 
+ 
+Apêndice E Códigos de análise 
+ 
+  
+ 
+ 
+ 
+Padrão e Convencional 
+Unidades para ensaios Adicionados: Analitos 42 INS (Insulina), 50 C-pep 
+(Peptídeo C), 69 HIV c (HIV Combo), 357 ALTV (Alanina Aminotransferase), 358 
+ALT2 (Alanina Aminotransferase), 178 
+NCHEK (AKIRisk), 80 TIMP2 (TIMP-2), 
+81 IGFBP (IGFBP-7) e 307 Cl- 
+(Cloreto) - Urina  
+Alterado: Homocisteína 2 para Homocisteína 
+Adicionado: Ensaios ALT2, ALTV, Insulina, C-
+pep, NCHEK, TIMP2, IGFBP e VIH c  
+2014-10-20 Apêndice B 
+Apêndice E Códigos de analitos 
+Padrão e convencional 
+Unidades para ensaios adicionadas: analitos 539 A1c (hemoglobina 
+A1c) e 540 Hb (Hemoglobina) 
+Adicionado: Ensaios derivados 927 %A1c 
+(%Hemoglobina A1c) e 928 HbA1c 
+(HbA1c)  
+2014-07-25 Apêndice B 
+Apêndice E Códigos de analitos 
+Padrão e convencional 
+Unidades para ensaios Removido: 529 HCY Homocisteína (HCY). 
+- Uma barra de alteração marca onde HCY foi 
+eliminado em ambas as tabelas. 
+2013-06-18 Apêndice B 
+Apêndice E Códigos de analitos 
+Padrão e convencional 
+Unidades para ensaios Adicionado: 542 HCY 2 Homocisteína 2 
+(HCY2). Guia do Sistema de Informação Laboratorial (LIS) Introdução  
+Pub. N.º J32799 5 
+2022-05-25 Secção emitida 
+Número da secção Título da secção Detalhes da revisão 
+2013-04-01 Apêndice B Códigos de analitos  Suprimido: 035 B-hCG livre 
+(FBhCG), 046 TSH30 (TSH30), 
+e 332 Capacidade total de ligação do ferro (TIBC). 
+ Adicionados: 037 PSA livre (fPSA), 062 
+CMV IgG (CMV G), 063 CMV IgM (CMV M), 073 Sífilis TPA 
+(Syph), 074 VITAMINA D TOTAL 
+(tVitD), 075 PSA total II (tPSA) e 174 % PSA livre (%fPSA). 
+ Alterado: 017 HBsAg ES 
+(HBsAg), 018 anti-HBs (aHBs), 
+019 Anti-HBc (aHBc), 020 Anti-
+HBc IgM (HBc M), 022 Anti-HAV IgM (HAV M), 023 Anti-
+HVC (aHVC), 024 Anti-HIV 1/2 
+(aHIV), 033 Folato (Fol), 038 CA 125 II (CA125), 039 CA 15-3 
+(CA153), 040 CA 19-9 (CA199), 
+044 NTx (NTx), 049 Confirmação do HBsAg (HBCon), 055 T3 livre II 
+(FT3II), e 065 NT-proBNP 
+(NTBNP). 
+2011-01-10 - - Adicionado o sistema VITROS  4600 Chemistry 
+na página de rosto e nos rodapés. 
+ 1 e 1.1 Introdução e Âmbito de Aplicação Adicionado o Sistema de Química VITROS  4600 
+Sistema. 
+ Apêndice B 
+e 
+Apêndice C Códigos de analitos e diluentes 
+Códigos  Adicionado o sistema VITROS  4600 
+Sistema de Química. 
+ Adicionado User Defined (Definido pelo utilizador) para uma 
+escolha de fluido corporal. 
+ Eliminados 037 FPSA e 041 CA 72-
+4. 
+ Correção da ortografia de 
+Fenobarbital. 
+ Marcado HEM, ICT e TUR para 
+VITROS 3600. 
+ Adicionados ensaios definidos pelo utilizador e 
+Diluentes definidos pelo utilizador. 
+ Apêndice E Unidades padrão e convencionais para ensaios 
+Unidades padrão e convencionais para ensaios  Removido %IFCC como unidade alternativa 
+unidade alternativa para o ensaio d%A1c. 
+ Adicionado o sistema VITROS  4600 
+Sistema de Química. 
+ Apêndice F Códigos de resultados Adicionado o código HC (High Concentration - Concentração elevada). 
+ Apêndice I Interfaces mecânicas/eléctricas 
+Interfaces para comunicação 
+Comunicação em série Adicionado o Sistema de Química VITROS  4600 
+Chemistry System. Introdução Guia do Sistema de Informação Laboratorial (LIS) 
+ Pub. N.º J32799 
+6 2022-05-25 Secção emitida 
+Número da secção Título da secção Detalhes da revisão 
+ Apêndice J Comunicações de rede 
+Através de Ethernet  Adicionado o VITROS  4600 
+Sistema de Química  
+ Actualizada a referência à  
+e-Connectivity  Especificações de ligação de rede 
+Especificações de ligação de rede e Formulário de rede. 
+2010-11-10 2.2.2 Carregar resultados do doente No segundo ponto, foi adicionado o carregamento 
+resultados de exames num grupo. 
+ 4.4 Carregar registos de resultados Utilizou o termo "Grupo" em vez de 
+"Tecnologia" para descrever este Modo de carregamento. 
+ Apêndice B Códigos de analitos Adicionado o analito 070 iPTH e o ensaio derivado 
+925 mmA1c. 
+ Apêndice E Unidades padrão e convencionais para ensaios 
+Adicionado iPTH e ensaio derivado mmA1c. 
+Correção das unidades convencionais para dHb 
+e as unidades convencionais e alternativas para d%A1c. 
+unidades convencionais e alternativas para d%A1c. 
+2010-08-06 4.4 Carregamento de registos de resultados Utilizou os termos "Amostra", "Resultado" e 
+"Tecnologia" para descrever os modos de carregamento. 
+2010-03-12 Todos Texto editado, capitalização e pontuação 
+para maior clareza. 
+  Página de título/informações 
+Informações importantes Adicionadas informações de direitos autorais. 
+ 1.3 Definições Definições adicionadas para Em processo e Tabela. 
+Redefinido SI como Índices de amostra e 
+em todo o Guia. 
+ 4.4 Carregamento de registos de resultados Adicionadas informações. 
+ 5.1.7 Tabela de tipos de reprocessamento Adicionado G para Reprocessado devido a outro 
+componente de grupo de reprocessamento que requer reprocessamento. 
+ 5.1.8 Tabela de tipos de pontos de medição Adicionada esta secção. 
+ 5.2.2.1 Mensagem de carregamento de resultados 
+Exemplos Adicionados exemplos de resultados médios suprimidos 
+suprimida. 
+ 5.2.3.1 Consulta ao anfitrião/Cancelar consulta 
+Exemplos Adicionado o tipo de ponto de medição nos exemplos. 
+ 5.3.5 Registo de resultados ASTM R Adicionada informação na coluna Notas aos campos  
+campos n.ºs 4, 5 e 7. 
+ 5.3.7 Registo de pedido ASTM Q Adicionadas informações sobre o ponto de referência de medição 
+ao campo #11, Campo do utilizador 1, que é agora suportado. 
+ 5.3.8 Registo de resultado alargado ASTM M/X 
+Registo Para o campo #8, foi acrescentado "G" à coluna Notas 
+na coluna Notas. Guia do Sistema de Informação Laboratorial (LIS) Introdução  
+Pub. N.º J32799 7 
+2022-05-25 Secção emitida 
+Número da secção Título da secção Detalhes da revisão 
+ 5.4.4.1 HL7 OUL Mensagem de observação não solicitada 
+Mensagem de observação não solicitada 
+Exemplos Acrescentados dois exemplos para o resultado médio suprimido 
+suprimida. 
+ 5.4.5.1 Mensagem de consulta do anfitrião HL7 QPB 
+Exemplo Adicionado o tipo de ponto de medição no exemplo de registo QPD 
+exemplo de registo. 
+ 5.4.6.1 Mensagem de consulta do anfitrião HL7 RSP 
+Exemplo de mensagem de resposta Adicionado o tipo de ponto de medição no exemplo de registo QPD 
+exemplo de registo QPD. 
+ 5.4.6.2 Consulta de Anfitrião HL7 RSP 
+Exemplo de mensagem de resposta 
+(Nenhum programa encontrado) Adicionado o tipo de ponto de medição no exemplo de registo QPD 
+exemplo de registo QPD. 
+ 5.5.9 Resultado da observação (OBX) Para os campos n.ºs 5, 6 e 8, foram acrescentadas informações na coluna 
+na coluna Notas. 
+ 5.5.15 Definição do parâmetro de consulta 
+Detalhes Adicionada informação sobre o ponto de referência da medição 
+ao campo #10 Localização, que agora é suportado. 
+ 5.5.19 Resultados alargados do segmento Z 
+(ZER) Para o campo #5, foi adicionado "G" à coluna Notas 
+na coluna Notas. 
+ Apêndice F Códigos de resultados Atualização das explicações dos códigos CE, EC, 
+M2, e RE. 
+ Apêndice G Índices de amostra Sinalizadores enviados para o 
+o LIS Editou o nome deste apêndice e incluiu 
+incluído apenas os sinalizadores de 2 caracteres enviados para o LIS. 
+ 
+Versões anteriores 
+Secção emitida Detalhes da revisão 
+2008-08-29 4.3.2 Reformulado: Explicação da tentativa de editar um programa em curso (26). 
+ 4.3.3 Reformulado: Nota relativa a exemplos de programas em processamento. 
+ 4.3.3 Adicionado: Uma explicação de um novo programa de amostra descarregado para uma amostra que 
+já tem um programa em processamento. 
+ 4.3.4 Alterado: Referência à mensagem de descarregamento 27. 
+ 4.4 Reformulado: Explicação dos registos e da categorização dos resultados. 
+ 4.4 Adicionado: Declaração sobre comentários de texto qualitativo e registo de comentários de resultados. 
+ 5.1.7 Adicionado: Tabela de tipos de reprocessamento. 
+ 5.2.2 Adicionado: Linha de comentário [C] na estrutura da mensagem de carregamento de resultados. 
+ 5.2.2.1 Adicionado: Um segundo exemplo de mensagem de carregamento de resultados. 
+ 5.3.6 Alterado: #4 e #5 do registo de comentários ASTM C. 
+ 5.3.8 Adicionado: #8 Tipo de reprocessamento ao registo de resultados alargado ASTM M/X. 
+ 5.4.4 Adicionado: linha [NTE] à estrutura da mensagem de observação não solicitada HL7 OUL.  
+ 5.4.4.1 Adicionado: Um segundo exemplo de mensagem de observação não solicitada HL7 OUL. 
+ 5.5.7 Adicionado: Informações para #3 e #4 de Notas e Comentários (NTE). 
+ 5.5.19 Adicionado: #5 Tipo de Reprocessamento para Resultados Alargados do Segmento Z (ZER). 
+2008-08-06 N/A Lançamento inicial do Guia LIS Introdução Guia do Sistema de Informação Laboratorial (LIS) 
+ Pub. N.º J32799 
+8 2022-05-25 1.3 Definições 
+[Nos formatos de mensagem, os parênteses indicam que o grupo de registos/segmentos 
+opcional. 
+{ } Nos formatos de mensagem, os parênteses indicam que um ou mais registos/segmentos do grupo de 
+registos/segmentos pode ser repetido. 
+ACK Confirmação positiva. Para ASTM - AS CII carácter 6.  Para HL7 - Geral 
+mensagem de confirmação 
+Analisador Um instrumento e/ou dispositivo de processamento e manuseamento de espécimes que efectua medições 
+em amostras de doentes de analitos quantitativos e clinicamente relevantes. 
+Disco de dados do ensaio 
+(ADD) Um CD que contém informações sobre o ensaio. 
+ASCII Código normalizado americano para o intercâmbio de informações 
+ASTM American Society for Testing and Materials (Sociedade Americana de Ensaios e Materiais). Neste guia, ASTM refere-se aos 
+protocolos de comunicação definidos pelas especificações E-1381 e E-1394 indicadas nas 
+referências. 
+Velocidade de comunicação de dados entre o sistema e o computador de laboratório, em bits por segundo. 
+Bi-direcional Um protocolo de comunicação que suporta o carregamento de resultados de testes, o descarregamento de capacidades de programas de 
+(ordem) e pedidos de consulta 
+caracteres de controlo Caracteres ASCII não imprimíveis no intervalo 0-31 e 127 decimal que efectuam acções para 
+acções para modificar o processamento de dados. 
+caracteres de dados Caracteres ASCII imprimíveis no intervalo 32-126 decimal que constituem o "texto" de uma 
+mensagem. 
+Tipo de dados Um tipo de dados restringe o conteúdo e o formato do campo de dados. Aos tipos de dados é atribuído um código de 2 ou 3 letras.
+letras. Alguns tipos de dados são tipos codificados ou compostos com vários componentes. O 
+tipo de dados aplicável é listado e definido em cada definição de campo. O capítulo 2A da norma HL7 
+v2.5 fornece uma listagem completa dos tipos de dados utilizados neste guia e as respectivas definições. 
+O alvo de Ensaio diretamente selecionado que é premido quando o programa é visualizado no ecrã Sample Programming 
+programação de amostras. 
+descarregamento Dados enviados do computador de laboratório para o sistema 
+DSR "Data Set Ready" sinal de controlo RS-232 
+DTE Equipamento terminal de dados. Na utilização comum, DTE designa normalmente o iniciador das 
+comunicações. 
+EAN Mensagem de notificação de equipamento automatizado HL7 
+ENQ Inquérito ASTM. Carácter ASCII 5. Este carácter de controlo é utilizado para estabelecer 
+comunicação entre máquinas. 
+EOT Fim de transmissão ASTM. Caractere ASCII 4.  Um carácter de controlo utilizado para marcar o fim 
+de uma sessão. 
+EQU Segmento de pormenor do equipamento HL7  
+ERR Segmento de erro HL7 Guia do Sistema de Informação Laboratorial (LIS) Introdução  
+Pub. N.º J32799 9 
+2022-05-25 ETB Bloco de Fim de Transmissão ASTM. Carácter ASCII 23. Este carácter de controlo pode ser utilizado 
+Este carácter de controlo pode ser utilizado em vez de ETX para distinguir entre o fim de um bloco de dados a um nível lógico (de abstração) diferente. 
+(abstração) lógico diferente. 
+ETX Fim de texto ASTM. Carácter ASCII 3. Este carácter de controlo indica o fim do bloco de dados 
+(texto). 
+ASCII alargado 
+Conjunto de caracteres ASCII na gama 128-255 decimal. Definido como na norma ISO 8859-1 
+Campo Uma cadeia de caracteres nos segmentos HL7 e nos registos ASTM 
+frame A unidade básica de comunicação na camada de ligação de dados para o protocolo ASTM (ver também 
+pacote)  
+HL7 Health Level Seven.   
+Consulta ao anfitrião Pedido de dados a outro sistema 
+In Process Relativamente aos programas de amostras - In Pr ocess refere-se ao tempo imediatamente a seguir à 
+a conclusão da leitura do tabuleiro no subsistema de tratamento de amostras até 
+uma das seguintes ocorrências: 
+todo o trabalho está concluído (incluindo o reprocessamento) 
+todo o trabalho está concluído até ao ponto em que é necessária uma nova medição (testes à espera de 
+reprocessamento) e a amostra foi retirada do subsistema "Tratamento de amostras 
+INR Mensagem HL7 de pedido de inventário de equipamento automatizado 
+INU Mensagem HL7 de atualização do inventário do equipamento automatizado 
+INV Segmento de pormenor do inventário HL7 
+ISO Organização Internacional de Normalização. 
+LCI Interface de Comunicação de Laboratório.  Um módulo do sistema que lida com o lado do analisador da interface 
+interface com o Sistema de Informação Laboratorial. 
+LIS Sistema de Informação Laboratorial. O computador de laboratório, juntamente com o software que nele corre 
+que nele corre, visto como uma unidade lógica. 
+LITT Ferramenta de teste da interface de laboratório 
+Mensagem 
+ Um corpo de informação baseado em texto composto por uma série de registos (para ASTM) e 
+segmentos (para HL7).  
+MLLP Protocolo mínimo de baixo nível normalmente utilizado para a comunicação HL7 através de uma ligação de rede TCP/IP 
+ligação de rede TCP/IP 
+MSA Segmento de reconhecimento de mensagem HL7 
+MSH Segmento de cabeçalho de mensagem HL7  
+NAK Confirmação negativa ASTM. Pode ser o carácter ASCII 21. 
+NDS Segmento de detalhes da notificação HL7 
+NTE Segmento de notas e comentários HL7 
+OBR Mensagem de pedido de observação HL7 
+OBX Segmentos de resultados de observação HL7 Introdução Guia do Sistema de Informação Laboratorial (LIS) 
+ Pub. N.º J32799 
+10 2022-05-25 OML Mensagem de pedido de encomenda de laboratório HL7 
+ORC Segmento de pedido comum HL7 
+Ordem Termo HL7 para descarregar o programa de amostras 
+Mensagem ORL HL7 de resposta ao pedido de laboratório 
+Interligação de sistemas abertos OSI.  O modelo padrão para protocolos de rede e 
+aplicações distribuídas. Define sete camadas de rede.  
+Camada 1 - Física Camada 2 - Ligação de dados 
+Camada 3 - Rede 
+Camada 4 - Transporte Camada 5 - Sessão 
+Camada 6 - Apresentação 
+Camada 7 - Aplicação 
+Mensagem OUL HL7 Unsolicited Specimen Container Oriented Observation (observação orientada para o contentor de espécimes). Mensagem utilizada para 
+A mensagem utilizada para a transmissão de resultados laboratoriais suporta uma mensagem centrada no espécime para testes humanos, 
+humana, ambiental e alimentar de natureza bioquímica, incluindo microbiologia. 
+Pacote A unidade básica de comunicação na camada de ligação de dados  
+PID Segmento de informação do doente HL7 
+Protocolo Um conjunto de regras para a transmissão e receção de unidades de informação a cada nível de uma interface de comunicação, em que uma dada comunicação é feita através de um protocolo. 
+de comunicação, em que um determinado nível de comunicação corresponde a um nível lógico 
+de abstração de dados. 
+Camada de protocolo A aplicação de um paradigma de camadas à definição de um protocolo produz o conceito de 
+"camadas de protocolo".  Cada camada de protocolo lida com unidades discretas de informação pertencentes a um 
+comunicação específica ou nível de abstração de dados.  
+Pilha de protocolos Uma organização hierárquica de camadas de protocolos, cada uma tratando um nível mais elevado de abstração de dados 
+de abstração de dados que é utilizada para fornecer uma interface de comunicações completa. 
+Consulta PSID Consulta de identificação positiva de amostras. Uma capacidade do sistema para solicitar ordens de ensaio ao 
+do LIS com base numa identificação da amostra, por exemplo, lida automaticamente a partir do leitor de códigos de barras da amostra/bandeja 
+no sistema. 
+PV1 Segmento de visita do doente HL7 
+QAK Segmento de confirmação de consulta HL7 
+QBP_ZOS Mensagem de consulta do anfitrião HL7.  Este é um formato de mensagem proposto para a próxima versão do HL7 
+versão HL7. 
+QCN Mensagem de consulta de cancelamento HL7 
+QID Segmento de identificação da consulta HL7 
+QPD Segmento de definição do parâmetro de consulta HL7 
+RCP Segmento do parâmetro de controlo da resposta HL7 
+Ensaio restrito Um ensaio que requer um tratamento mais rigoroso do que outros ensaios. Os ensaios que têm alguns 
+parâmetros, definidos no Assay Data Disk (ADD), que não podem ser alterados.  Guia do Sistema de Informação Laboratorial (LIS) Introdução  
+Pub. N.º J32799 11 
+2022-05-25 Mensagem de resposta à consulta do anfitrião HL7 RSP_ZOS.  Este é um formato de mensagem proposto para a próxima versão do 
+versão HL7. 
+RTS ASTM "Request To Send" sinal de controlo RS-232 
+Rx Receber(r). 
+SAC HL7 Specimen Container Detail Segment (segmento de pormenor do recipiente de amostras) 
+Amostra A porção discreta de um fluido corporal ou de uma substância colhida para exame, estudo ou análise de 
+Uma ou mais quantidades ou características para determinar o carácter do todo 
+Programa da amostra Teste(s) solicitado(s) na amostra. 
+SI Índices de amostras (Sample Index) 
+Specimen Termo HL7 para Amostra.  
+Specimen ID (identificação da amostra) Identificação da amostra.  Pode ser introduzido manualmente a partir da GUI ou com código de barras 
+SPM Segmento de espécime HL7 
+STX ASTM Início do texto. Carácter ASCII 2. Este carácter de controlo indica o início do bloco de 
+dados ou do bloco de informação "texto". 
+Sistema O software e o hardware que, em conjunto, constituem o Analisador. 
+Tabela O atributo tabela da definição do campo de dados especifica o identificador HL7 para um conjunto de valores codificados 
+valores codificados 
+TCP/IP O TCP/IP é um protocolo de rede concebido em torno de um esquema simples de quatro camadas. Omite, de facto 
+algumas características encontradas no modelo OSI. Além disso, combina as características de algumas camadas OSI adjacentes e divide outras camadas. 
+camadas OSI adjacentes e separa outras camadas. Os quatro níveis de rede definidos pelo modelo TCP/IP 
+são as seguintes.  
+Camada 1 - Ligação  
+Camada 2 - Rede  
+Camada 3 - Transporte Camada 4 - Aplicação  
+Eventos de ativação Um evento no mundo real da saúde cria a necessidade de os dados circularem entre sistemas. 
+O evento do mundo real é designado por evento de ativação.  Este termo é utilizado no contexto do HL7. 
+Tx Transmit, Transmission, ou Send(er). 
+Upload Dados enviados do sistema para o computador do laboratório 
+UTF8 Conjunto de caracteres de vários bytes 
+Z Segmento HL7 Todos os tipos de mensagens que accionam códigos de eventos e códigos de identificação de segmentos que começam por Z são 
+Z são reservados para mensagens definidas localmente.  
+ZER Segmento HL7 personalizado que representa os resultados alargados 
+1.4 Referências 
+Estes documentos constituem a base de muitas das especificações deste Guia LIS. Os dois primeiros 
+listados são particularmente importantes.   
+NCCLS LIS1-A 
+(Anteriormente ASTM E1381-02) Especificação padrão para o protocolo de baixo nível para transferir mensagens entre instrumentos de laboratório clínico e sistemas informáticos 
+Instrumentos de Laboratório Clínico e Sistemas Informáticos Descrição Geral Guia do Sistema de Informação Laboratorial (LIS) 
+ Pub. N.º J32799 
+12 2022-05-25 NCCLS LIS2-A 
+(Anteriormente ASTM E1394-97) Especificação padrão para a transferência de informações entre instrumentos de laboratório clínico e sistemas informáticos 
+Instrumentos de Laboratório Clínico e Sistemas Informáticos 
+N/A Especificações HL7 2.5, 2003 
+N/A Directrizes de implementação HL7 2.3 
+Norma Ethernet IEEE 802.3i 10BaseT Norma Ethernet IEEE 802.3u 100BaseT 
+ 
+2. Descrição geral 
+O Sistema de Informação Laboratorial refere-se à interface que comunica entre o Sistema e 
+o sistema e o sistema informático do laboratório (computador de laboratório). Esta comunicação pode ser efectuada utilizando os protocolos HL7 ou ASTM. 
+Com o protocolo ASTM, a comunicação pode ocorrer através de uma linha de série do sistema para o computador de laboratório ou através da rede do utilizador. 
+o computador de laboratório ou através da rede do utilizador. Com o protocolo HL7, a comunicação só 
+ocorre através da rede do utilizador.  As comunicações são bidireccionais e incluem o descarregamento de 
+programas de amostragem do computador de laboratório para o sistema, o carregamento de registos de resultados do sistema para o computador de laboratório, a consulta de programas de amostragem do sistema para o computador de laboratório, a consulta de 
+consulta do inventário do computador de laboratório para o sistema e envio de notificações assíncronas do sistema para o computador de laboratório. 
+Sistema para o Computador de Laboratório. Este documento cobre cada um destes aspectos do ponto de vista do 
+do Sistema. 
+As especificações deste documento estão agrupadas nas seguintes secções:  
+ Comunicações - Inclui as interfaces físicas e o processamento específico das comunicações 
+específicas exigidas pelos protocolos HL7 e ASTM. 
+ Processamento de registos - Especifica o conteúdo das mensagens (por exemplo, programas de amostragem, resultados 
+resultados, registos, informações sobre doentes) e os seus componentes a implementar nesta aplicação. O 
+formato e a hierarquia são especificados na secção 5.2 Mensagens ASTM e na secção 5.4 Mensagens HL7 
+Mensagens HL7. 
+2.1 Funções 
+ Fornecer um método para receber programas de amostras de doentes e de controlo de qualidade programados remotamente 
+de controlo de qualidade programados remotamente a partir de outro sistema. (Descarregar do computador do laboratório) 
+ Fornecer um método para enviar resultados de doentes, resultados de controlo de qualidade, dados demográficos de doentes e médicos 
+demográficos de doentes e médicos para outro sistema. (Carregar resultados para o computador de laboratório) 
+ Fornecer a capacidade de solicitar programas de amostra de outro sistema para processar 
+amostra. (Host Query) 
+ Indicar ao operador o estado da comunicação entre o sistema e o computador de laboratório. 
+computador de laboratório. (Estado) 
+ Fornecer a capacidade de processar pedidos de níveis de inventário a bordo. (Consulta de inventário) 
+ Fornecer um método para enviar informações sobre o estado do analisador para outro sistema. (Error 
+Error Messages/Automation Status U pdates/Download Messages) Guia do Sistema de Informação Laboratorial (LIS) Descrição geral 
+Pub. N.º J32799 13 
+2022-05-25 2.2 Panorâmica operacional 
+A panorâmica que se segue mostra a forma geral como ocorrem as interacções entre o LIS e o 
+Sistema.  Existem outros modos, incluindo cenários de erro, que são mais pormenorizados nas 
+especificações. 
+2.2.1 Descarregar programas de amostra 
+Sample Os programas que contêm a identificação do espécime, as informações sobre o doente e os testes a efetuar são introduzidos
+no
+para o computador do laboratório.
+The O computador de laboratório
+b transfere o programa de amostras e as informações do doente para o sistema.
+Information
+ é introduzida na base de dados de amostras do sistema.
+Th
+A amostra é apresentada na medição.
+Th
+A base de dados do Programa de Amostras é consultada em busca de um programa de amostras que corresponda à ID da amostra
+o
+ou à posição do copo do tabuleiro.
+The programa é encontrado e a amostra é doseada.
+2.2.2 
+Carregar resultados do doente 
+The A amostra é doseada e processada.
+The último teste concluído, ou qualquer teste concluído se estiver configurado para carregar resultados individuais, ou todos os
+todos os testes de um grupo, se configurado para carregar grupos.
+Th
+Os resultados do sistema são transmitidos para o computador do laboratório.
+2.2.3 Consulta de
+t Query (Consulta do anfitrião) 
+The A consulta do anfitrião está configurada para estar ligada .
+A 
+A amostra com código de barras é digitalizada na área de manuseamento de amostras.
+O pedido A é enviado do sistema para o computador do laboratório, solicitando informações (amostra e
+pr
+ograma e dados demográficos do doente) para a ID da amostra no código de barras.
+The O computador de laboratório responde com os dados solicitados.
+Th
+O programa da amostra é introduzido na base de dados e o espécime é doseado.
+2.2.4 Tratamento de erros 
+Tratamento de erros 
+O sistema trata os erros encontrados durante a comunicação. 
+2.2.5 Consulta do inventário 
+The O computador de laboratório solicita informações sobre o inventário a bordo.
+The O sistema responde com os dados solicitados.
+2.2.6 Mensagens assíncronas
+mensagens assíncronas 
+2.2.6.1 Mensagens de erro 
+The O sistema lança um código de condição (para uma tarefa que não seja LCI).
+The O sistema transfere informações sobre o código de condição (gravidade, mod-err, texto curto).Descrição geral Guia do Sistema de Informação Laboratorial (LIS) 
+ Pub. N.º J32799 
+14 2022-05-25 2.2.6.2 Actualizações do estado da automatização 
+ O utilizador guarda as alterações à Configuração de Automatização em Opções. 
+ O sistema transfere o estado atual da Configuração de Automatização. 
+2.2.6.3 Mensagens de auditoria (mensagens de transferência) 
+ Um programa de amostra tem conteúdo inválido ou em falta. 
+ O sistema transfere uma mensagem que indica problemas com o programa de amostra. 
+2.2.6.4 Registo do estado do instrumento 
+ O estado do analisador altera-se. 
+ O sistema transfere uma mensagem que indica pormenores do estado do analisador. 
+2.2.7 Consulta do estado do instrumento 
+ O computador de laboratório solicita o estado do analisador. 
+ O sistema transfere uma mensagem que indica os pormenores do estado do analisador. 
+2.2.8 Estado de conclusão do teste 
+ O computador de laboratório solicita o estado de uma determinada amostra. 
+ O sistema responde com informações sobre a amostra e o estado de cada ensaio 
+solicitado para a mesma. 
+2.3 Restrições de projeto 
+O software do sistema é compatível com as especificações ASTM LIS1-A e LIS2-A. 
+O software do sistema é compatível com as especificações HL7 v2.5, capítulos 2, 3, 4, 7 e 13. Esta versão 
+Esta versão HL7 não inclui disposições para a funcionalidade Host Query, pelo que é utilizado um segmento Z personalizado. 
+2.4 Pressupostos, dependências e riscos resultantes 
+ Apenas um LIS está ligado de cada vez a um Analisador. 
+ O fornecedor do LIS está em conformidade com esta especificação. 
+ As especificações do presente documento aplicam-se a todos os protocolos, salvo indicação em contrário. 
+ As especificações relativas ao processamento de mensagens são independentes das relativas à comunicação. Por 
+Por exemplo, quando um protocolo (por exemplo, ASTM) é mencionado numa especificação de processamento, aplica-se 
+a todos os métodos de comunicação que suportam esse protocolo (por exemplo, Ethernet e série). 
+ Este documento não descreverá a GUI em si, mas apenas a funcionalidade do recurso. 
+ Este documento não descreve em pormenor os requisitos de hardware. 
+ Uma porta de comunicação serial compatível com EIA RS-232 com um conetor DB25 fêmea padrão 
+para a comunicação entre o sistema e o computador de laboratório quando se utiliza a interface série. 
+quando se utiliza a interface de série. 
+ Pressupõe-se uma porta de comunicações de rede compatível com TCP/IP com uma rede Ethernet padrão para 
+para a comunicação entre o Sistema e o Computador de Laboratório quando se utiliza a interface 
+interface Ethernet. 
+ A segurança das comunicações de rede é da responsabilidade do utilizador. Guia do Sistema de Informação Laboratorial (LIS) Especificações de Comunicação  
+Pub. N.º J32799 15 
+2022-05-25  A firewall do sistema tem de ser configurada para permitir comunicações de/para o LIS quando 
+quando se utiliza TCP/IP. 
+3. Especificações de comunicação 
+As especificações seguintes referem-se às camadas responsáveis pelo transporte de mensagens entre o 
+Sistema e o LIS. O conteúdo destas mensagens não é relevante para estes níveis, que apenas 
+garantem que as mensagens sejam transferidas sem erros entre os sistemas. 
+O sistema actua como um remetente  
+ Quando é iniciada uma consulta ao anfitrião  
+ Quando os resultados têm de ser transferidos para o computador de laboratório  
+ Quando envia uma mensagem assíncrona 
+ Quando responde a uma consulta de inventário  
+O sistema actua como recetor  
+ Quando o computador de laboratório responde a uma consulta do anfitrião 
+ Quando se pretende descarregar programas de amostra 
+ Ao enviar uma consulta de inventário   
+Aquando do arranque do sistema, o módulo LCI testa as comunicações. Se não for possível estabelecer uma ligação a um LIS, o LCI comunica uma condição de erro ao 
+operador. 
+3.1 Interfaces físicas  
+Nota: Ver Apêndice I - Interfaces mecânicas/eléctricas para mais pormenores sobre estas interfaces. 
+3.1.1 Interface física Ethernet 
+Os protocolos ASTM e HL7 suportam a utilização da comunicação TCP/IP para a camada de transporte físico. 
+de transporte físico. Os dois protocolos partilham as mesmas especificações para esta camada. 
+O sistema estabelece uma ligação ao computador do laboratório com um endereço IP e uma porta configurados. 
+Nota: Esta interface é bidirecional mas apenas iniciada pelo Sistema. 
+3.1.2 Interface física de série 
+O sistema 
+ Utiliza 1 bit de arranque   
+ Suporta 1 ou 2 bits de paragem 
+ Suporta paridade EVEN, ODD e NONE 
+ Usa 8 bits de dados 
+ Suporta as seguintes taxas de transmissão: 
+ 9600 
+ 19200 
+ 38400 
+ 57600 
+ 115200 Especificações de comunicação Guia do Sistema de Informação Laboratorial (LIS) 
+ Pub. N.º J32799 
+16 2022-05-25 3.2 Comunicações ASTM 
+Nota: Todas as secções referenciadas podem ser encontradas em Standard Specification for Low-Level Protocol to 
+Transfer Messages Between Clinical Labora tory Instruments and Computer Systems (Protocolo de baixo nível para transferir mensagens entre instrumentos de laboratório clínico e sistemas informáticos), 
+NCCLS LIS1-A (Anteriormente ASTM E1381-02). 
+As camadas ASTM envolvidas na transferência de dados do sistema para o computador de laboratório e do computador de laboratório para o sistema dividem-se em 
+computador de laboratório para o sistema estão divididas nestes componentes: 
+ Camada física - Composta pela configuração efectiva de hardware e software utilizada para 
+para comunicar entre os dois sistemas. Para comunicações em série, isto corresponde a 
+Secção 5. Para as comunicações Ethernet, corresponde à Secção 7 e 8.2.1.1. Para obter especificações, consultar a interface adequada (Ethernet ou série). 
+ Camada Datalink - Responsável pelos quadros de dados lógicos constituídos pelos dados brutos trocados 
+trocados com a camada física. Assegura que os pacotes podem ser transferidos sem erros 
+entre máquinas. Para comunicações em série, corresponde à camada Datalink especificada 
+na Secção 6. Para as comunicações Ethernet, corresponde à secção 8.  
+O sistema suporta um tamanho máximo de ficheiro configurável que substitui os valores especificados em 
+Standard Specification fo r Low-Level Protocol to Transfer Me ssages Between Clin ical Laboratory 
+Clin ical Laboratory Instruments and Computer Systems, NCCLS LIS1-A (Anteriormente ASTM E1381-02). 
+3.2.1 Comunicações em série por ligação de dados ASTM
+
+Traduzido com a versão gratuita do tradutor - DeepL.com
+Traduzido com a versão gratuita do tradutor - DeepL.com
+Traduzido com a versão gratuita do tradutor - DeepL.com

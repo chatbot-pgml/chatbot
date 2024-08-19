@@ -1,0 +1,1 @@
+select init_session(:ten, :ses);
