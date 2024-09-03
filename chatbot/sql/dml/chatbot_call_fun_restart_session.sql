@@ -1,1 +1,0 @@
-select chatbot.restart_session(:ten, :ses)

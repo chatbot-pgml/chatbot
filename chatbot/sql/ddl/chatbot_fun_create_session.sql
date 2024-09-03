@@ -1,17 +1,9 @@
--- FUNCTION: chatbot.create_session(bigint, bigint, bigint, bigint)
+-- DROP FUNCTION chatbot.create_session(int8, int8, int8, int8);
 
--- DROP FUNCTION IF EXISTS chatbot.create_session(bigint, bigint, bigint, bigint);
-
-CREATE OR REPLACE FUNCTION chatbot.create_session(
-	ten bigint,
-	ag_inf bigint,
-	us bigint,
-	ag_emb bigint)
-    RETURNS bigint
-    LANGUAGE 'plpgsql'
-    COST 100
-    VOLATILE PARALLEL UNSAFE
-AS $BODY$
+CREATE OR REPLACE FUNCTION chatbot.create_session(ten bigint, ag_inf bigint, us bigint, ag_emb bigint)
+ RETURNS bigint
+ LANGUAGE plpgsql
+AS $function$
 DECLARE
     sessao_id BIGINT;
 BEGIN
@@ -41,7 +33,5 @@ BEGIN
 
     RETURN sessao_id;
 END;
-$BODY$;
-
-ALTER FUNCTION chatbot.create_session(bigint, bigint, bigint, bigint)
-    OWNER TO u_znz1rkducdgumst;
+$function$
+;

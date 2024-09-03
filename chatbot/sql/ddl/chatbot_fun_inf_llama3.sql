@@ -99,7 +99,7 @@ BEGIN
                                                  '{$question}', 
                                                  p_question)::text
                        ], 
-                       args   => '{ "max_new_tokens": 500 }'::JSONB)::text AS answer,
+                       args   => '{ "max_new_tokens": 1000 }'::JSONB)::text AS answer,
                    se.ultima_ordem,
                    ag.modelo_prompt_dialogo_a AS prompt_assistente
             FROM lista_contexto lc,
@@ -198,7 +198,7 @@ BEGIN
         
         	v_mensagem_texto := replace(v_mensagem_texto, '["', '');
         	v_mensagem_texto := replace(v_mensagem_texto, '"]', '');
-        	--v_mensagem_texto := replace(v_mensagem_texto, '\r', chr(13));
+        	
         
         	
         	

@@ -1,34 +1,28 @@
--- FUNCTION: chatbot.get_session(integer, bigint)
+-- DROP FUNCTION chatbot.get_session(int4, int8);
 
--- DROP FUNCTION IF EXISTS chatbot.get_session(integer, bigint);
-
-CREATE OR REPLACE FUNCTION chatbot.get_session(
-	tenacidade integer,
-	sessao bigint)
-    RETURNS text
-    LANGUAGE 'plpgsql'
-    COST 100
-    VOLATILE PARALLEL UNSAFE
-AS $BODY$
+CREATE OR REPLACE FUNCTION chatbot.get_session(par_tenacidade integer, par_sessao bigint)
+ RETURNS text
+ LANGUAGE plpgsql
+AS $function$
 DECLARE
-	msg text;
+    msg text := '';
+    rec RECORD;
 BEGIN
-    SELECT
-		id_sessao, 
-        string_agg(di.mensagem_texto, chr(13))
-    into msg
-    FROM
-        chatbot.dialogo as di
-    WHERE
-        di.id_sessao = sessao
-		and di.tenacidade = tenacidade
-	group by di.id_sessao
-	order by di.data_hora_mensagem;
+    FOR rec IN
+        SELECT di.data_hora_mensagem, di.direcao, di.ordem, di.mensagem_texto
+        FROM chatbot.dialogo as di
+        WHERE di.id_sessao = par_sessao
+            AND di.id_tenacidade = par_tenacidade
+        ORDER BY di.ordem
+    LOOP
+        msg := msg || '<b><i>' || 'Data/Hora: ' || rec.data_hora_mensagem || ' - '
+                   || 'Direção: ' || rec.direcao || ' - '
+                   || 'Ordem: ' || rec.ordem || '</b></i>' || CHR(13) || CHR(10)
+                   || 'Mensagem: ' || rec.mensagem_texto || CHR(13) || CHR(10) || CHR(13) || CHR(10);
+    END LOOP;
 
-    -- Retorna o id da nova sessão
+    -- Retorna a mensagem concatenada
     RETURN msg;
 END;
-$BODY$;
-
-ALTER FUNCTION chatbot.get_session(integer, bigint)
-    OWNER TO u_znz1rkducdgumst;
+$function$
+;

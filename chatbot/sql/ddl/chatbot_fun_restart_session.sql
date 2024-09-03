@@ -1,11 +1,9 @@
-CREATE OR REPLACE FUNCTION chatbot.restart_session(
-	p_tenacidade integer,
-	p_sessao bigint)
-    returns void
-    LANGUAGE 'plpgsql'
-    COST 100
-    VOLATILE PARALLEL UNSAFE
-AS $BODY$
+-- DROP FUNCTION chatbot.restart_session(int4, int8);
+
+CREATE OR REPLACE FUNCTION chatbot.restart_session(p_tenacidade integer, p_sessao bigint)
+ RETURNS void
+ LANGUAGE plpgsql
+AS $function$
 DECLARE
     nova_sessao_id BIGINT;
 begin
@@ -18,4 +16,5 @@ begin
 	where id_sessao = p_sessao
 	and id_tenacidade = p_tenacidade;
 end;
-$BODY$;
+$function$
+;

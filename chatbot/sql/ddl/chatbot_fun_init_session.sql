@@ -1,15 +1,9 @@
--- FUNCTION: chatbot.init_session(integer, bigint)
+-- DROP FUNCTION chatbot.init_session(int4, int8);
 
--- DROP FUNCTION IF EXISTS chatbot.init_session(integer, bigint);
-
-CREATE OR REPLACE FUNCTION chatbot.init_session(
-	tenacidade integer,
-	sessao bigint)
-    RETURNS bigint
-    LANGUAGE 'plpgsql'
-    COST 100
-    VOLATILE PARALLEL UNSAFE
-AS $BODY$
+CREATE OR REPLACE FUNCTION chatbot.init_session(tenacidade integer, sessao bigint)
+ RETURNS bigint
+ LANGUAGE plpgsql
+AS $function$
 DECLARE
     nova_sessao_id BIGINT;
 BEGIN
@@ -18,6 +12,7 @@ BEGIN
         id_tenacidade,
         id_sessao,
         id_usuario,
+        id_usuario_auditoria,
         data_hora_mensagem,
         direcao,
         mensagem,
@@ -30,13 +25,14 @@ BEGIN
         tenacidade,
         sessao,
         se.id_usuario,
+        se.id_usuario,
         NOW(),
         'S',
         REPLACE(ag.prompt_modelo_sistema, '{$system_prompt}', ag.prompt_modelo || REPLACE(us.perfil, '{$nome}', us.nome)) AS msg,
         ag.prompt_modelo,
         1,
-        '127.0.0.1',
-        'chatbot'
+        inet_client_addr(),
+        'postgres'
     FROM
         chatbot.sessao AS se,
         chatbot.agente AS ag,
@@ -50,7 +46,5 @@ BEGIN
     -- Retorna o id da nova sessão
     RETURN nova_sessao_id;
 END;
-$BODY$;
-
-ALTER FUNCTION chatbot.init_session(integer, bigint)
-    OWNER TO u_znz1rkducdgumst;
+$function$
+;

@@ -1,9 +1,9 @@
-CREATE OR REPLACE FUNCTION chatbot.insert_arquivo_parte(
-    p_id_tenacidade INT,
-    p_id_arquivo INT,
-    p_id_agente INT
-)
-RETURNS VOID AS $$
+-- DROP FUNCTION chatbot.insert_arquivo_parte(int4, int4, int4);
+
+CREATE OR REPLACE FUNCTION chatbot.insert_arquivo_parte(p_id_tenacidade integer, p_id_arquivo integer, p_id_agente integer)
+ RETURNS void
+ LANGUAGE plpgsql
+AS $function$
 begin
 	delete from arquivo_parte 
 	where id_tenacidade = p_id_tenacidade
@@ -32,4 +32,5 @@ begin
     )
     SELECT * FROM text_embeds;
 END;
-$$ LANGUAGE plpgsql;
+$function$
+;
