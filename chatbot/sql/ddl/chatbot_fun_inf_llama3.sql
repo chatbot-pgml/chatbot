@@ -41,7 +41,8 @@ BEGIN
                 FROM chatbot.arquivo_parte ap
                 JOIN chatbot.arquivo ar ON ap.id_arquivo = ar.id_arquivo
                 JOIN modelo_embed me ON ap.id_tenacidade = p_id_tenacidade
-                WHERE ar.selecionar = 1 OR (p_id_arquivo <> 0 AND ap.id_arquivo = p_id_arquivo)
+                WHERE (ar.selecionar = 1 OR (p_id_arquivo <> 0 AND ap.id_arquivo = p_id_arquivo))
+                AND ((ar.id_pessoa IS NOT NULL AND ar.id_pessoa = p_id_usuario) OR ar.id_pessoa IS NULL)
                 ORDER BY pgml.embed(me.modelo, p_question)::vector <=> ap.embed::vector
                 LIMIT 20
             ) ch
@@ -70,7 +71,7 @@ BEGIN
                                                '{tarefa}', ag.tarefa), 
                                        '{modelo}', ag.modelo)::JSONB,
                        inputs => ARRAY[
-                           his.mensagens||replace(replace(ag.modelo_prompt_dialogo_u, '{$context}', 'considerando o contexto a seguir:' || chr(13) || lc.lista_partes), 
+                           his.mensagens||replace(replace(ag.modelo_prompt_dialogo_u, '{$context}', 'considerando o contexto a seguir:' || chr(13) || COALESCE(lc.lista_partes, ' ')), 
                                                  '{$question}', 
                                                  p_question)::text
                        ], 
