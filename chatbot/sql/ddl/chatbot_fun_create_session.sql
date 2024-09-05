@@ -11,7 +11,7 @@ BEGIN
     (
         id_tenacidade,
         id_agente_inferencia,
-        id_usuario,
+        id_pessoa,
         data_hora_conversa,
         endereco_ip_auditoria,
         nome_aplicacao_auditoria,

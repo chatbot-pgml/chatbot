@@ -303,6 +303,15 @@ CREATE TABLE chatbot.pessoa (
 	observacoes text NULL,
 	endereco_ip_auditoria varchar(50) NULL,
 	nome_aplicacao_auditoria varchar(255) NULL,
+	login varchar(32) NULL,
+	senha varchar(32) NULL,
+	ativo varchar(3) NULL,
+	data_ativacao timestamp NULL,
+	codigo_ativacao varchar(32) NULL,
+	perfil text NULL,
+	telefone_voz varchar(20) NULL,
+	telefone_whatsapp varchar(20) NULL,
+	nome_pf varchar(200) NULL,
 	CONSTRAINT pessoa_pk PRIMARY KEY (id_pessoa)
 );
 
@@ -809,6 +818,49 @@ CREATE TABLE chatbot.tmp_tabela_trigger_execucao (
 );
 
 
+-- chatbot.usuario definition
+
+-- Drop table
+
+-- DROP TABLE chatbot.usuario;
+
+CREATE TABLE chatbot.usuario (
+	id_usuario bigserial NOT NULL,
+	id_tenacidade int8 NULL,
+	id_usuario_auditoria int8 NULL,
+	nome varchar(100) NULL,
+	login varchar(32) NULL,
+	senha varchar(32) NULL,
+	email varchar(100) NULL,
+	ativo varchar(3) NULL,
+	data_ativacao timestamp NULL,
+	codigo_ativacao varchar(32) NULL,
+	administrador varchar(3) NULL,
+	acesso_auditoria varchar(1) NULL,
+	acesso_autorizacoes varchar(1) NULL,
+	lista_empresa varchar(255) NULL,
+	endereco_ip_auditoria varchar(50) NULL,
+	nome_aplicacao_auditoria varchar(255) NULL,
+	perfil text NULL,
+	CONSTRAINT usuario_pk PRIMARY KEY (id_usuario)
+);
+
+-- Table Triggers
+
+create trigger tr_usuario_ad after
+delete
+    on
+    chatbot.usuario for each row execute function func_usuario_ad();
+create trigger tr_usuario_ai after
+insert
+    on
+    chatbot.usuario for each row execute function func_usuario_ai();
+create trigger tr_usuario_au after
+update
+    on
+    chatbot.usuario for each row execute function func_usuario_au();
+
+
 -- chatbot.usuario_grupo_usuario definition
 
 -- Drop table
@@ -1007,6 +1059,12 @@ ALTER TABLE chatbot.tmp_tabela_trigger ADD CONSTRAINT tmp_tabela_trigger_usuario
 -- chatbot.tmp_tabela_trigger_execucao foreign keys
 
 ALTER TABLE chatbot.tmp_tabela_trigger_execucao ADD CONSTRAINT tmp_tabela_trigger_execucao_usuario_fk FOREIGN KEY (id_usuario) REFERENCES chatbot.usuario(id_usuario) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- chatbot.usuario foreign keys
+
+ALTER TABLE chatbot.usuario ADD CONSTRAINT usuario_tenacidade_fk FOREIGN KEY (id_tenacidade) REFERENCES chatbot.tenacidade(id_tenacidade) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE chatbot.usuario ADD CONSTRAINT usuario_usuario_auditoria_fk FOREIGN KEY (id_usuario_auditoria) REFERENCES chatbot.usuario(id_usuario) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 
 -- chatbot.usuario_grupo_usuario foreign keys

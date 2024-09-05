@@ -47,31 +47,6 @@ BEGIN
             ) ch
             GROUP BY ch.id_arquivo
         ),
-        lista_contexto_usuario AS (
-            SELECT ch.id_arquivo_usuario,
-                   string_agg(ch.parte, chr(13)) AS lista_partes_usuario
-            FROM (
-                SELECT sm.id_arquivo_usuario, sm.parte
-                FROM (
-                    SELECT ap.id_arquivo_usuario, ap.parte,
-                           ap.embed::vector <=> (SELECT pgml.embed(me.modelo, p_question)::vector)
-                    FROM chatbot.arquivo_parte_usuario ap
-                    JOIN chatbot.arquivo_usuario au ON ap.id_arquivo_usuario = au.id_arquivo_usuario
-                    JOIN modelo_embed me ON ap.id_tenacidade = p_id_tenacidade
-                    WHERE ap.id_tenacidade = p_id_tenacidade
-                      AND au.id_usuario = p_id_usuario
-                    UNION
-                    SELECT 0, ' ', 1
-                    WHERE NOT EXISTS (SELECT 1 
-                                      FROM chatbot.arquivo_usuario au
-                                      WHERE au.id_usuario = p_id_usuario
-                                        AND au.id_tenacidade = p_id_tenacidade)
-                    ORDER BY 3
-                    LIMIT 10
-                ) sm
-            ) ch
-            GROUP BY ch.id_arquivo_usuario
-        ),
         historico AS (
             SELECT di.id_sessao,
                    string_agg(di.mensagem, ' ' ORDER BY di.ordem) AS mensagens
@@ -95,7 +70,7 @@ BEGIN
                                                '{tarefa}', ag.tarefa), 
                                        '{modelo}', ag.modelo)::JSONB,
                        inputs => ARRAY[
-                           his.mensagens||replace(replace(ag.modelo_prompt_dialogo_u, '{$context}', 'considerando o contexto a seguir:' || chr(13) || lc.lista_partes || chr(13) || lu.lista_partes_usuario), 
+                           his.mensagens||replace(replace(ag.modelo_prompt_dialogo_u, '{$context}', 'considerando o contexto a seguir:' || chr(13) || lc.lista_partes), 
                                                  '{$question}', 
                                                  p_question)::text
                        ], 
@@ -103,7 +78,6 @@ BEGIN
                    se.ultima_ordem,
                    ag.modelo_prompt_dialogo_a AS prompt_assistente
             FROM lista_contexto lc,
-                 lista_contexto_usuario lu,
                  chatbot.sessao se,
                  chatbot.agente ag,
                  historico his
@@ -146,7 +120,7 @@ BEGIN
         INSERT INTO chatbot.dialogo(
             id_tenacidade,
             id_sessao, 
-            id_usuario,
+            id_pessoa,
             data_hora_mensagem,
             direcao,
             endereco_ip_auditoria,

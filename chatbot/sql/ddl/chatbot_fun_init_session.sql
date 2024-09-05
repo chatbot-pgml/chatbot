@@ -11,7 +11,7 @@ BEGIN
     INSERT INTO chatbot.dialogo (
         id_tenacidade,
         id_sessao,
-        id_usuario,
+        id_pessoa,
         id_usuario_auditoria,
         data_hora_mensagem,
         direcao,
@@ -24,11 +24,11 @@ BEGIN
     SELECT
         tenacidade,
         sessao,
-        se.id_usuario,
-        se.id_usuario,
+        se.id_pessoa,
+        se.id_pessoa,
         NOW(),
         'S',
-        REPLACE(ag.prompt_modelo_sistema, '{$system_prompt}', ag.prompt_modelo || REPLACE(us.perfil, '{$nome}', us.nome)) AS msg,
+        REPLACE(ag.prompt_modelo_sistema, '{$system_prompt}', ag.prompt_modelo || REPLACE(us.perfil, '{$nome}', us.nome_pf)) AS msg,
         ag.prompt_modelo,
         1,
         inet_client_addr(),
@@ -36,11 +36,11 @@ BEGIN
     FROM
         chatbot.sessao AS se,
         chatbot.agente AS ag,
-        chatbot.usuario AS us
+        chatbot.pessoa AS us
     WHERE
         se.id_sessao = sessao
         AND se.id_agente_inferencia = ag.id_agente
-        AND se.id_usuario = us.id_usuario
+        AND se.id_pessoa = us.id_pessoa
     RETURNING id_sessao INTO nova_sessao_id;
 
     -- Retorna o id da nova sessão
