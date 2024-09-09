@@ -15,6 +15,8 @@ begin
 	set ultima_ordem = 1
 	where id_sessao = p_sessao
 	and id_tenacidade = p_tenacidade;
+	
+	nova_sessao_id := init_session(p_tenacidade, p_sessao);
 end;
 $function$
 ;

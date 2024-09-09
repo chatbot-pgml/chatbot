@@ -12,14 +12,15 @@ WITH modelo_embed AS (
                    ch.parte,
                    ch.cosine_distance
             FROM (
-                SELECT ap.id_arquivo, ap.parte, pgml.cosine_similarity(pgml.embed(me.modelo, :p_question)::vector, ap.embed::vector) AS cosine_distance
+                SELECT ap.id_arquivo, ap.parte, 1 - pgml.cosine_similarity(pgml.embed(me.modelo, :p_question)::vector, ap.embed::vector) AS cosine_distance
                 FROM chatbot.arquivo_parte ap                
                 JOIN chatbot.arquivo ar ON ap.id_arquivo = ar.id_arquivo
                 JOIN modelo_embed me ON ap.id_tenacidade = :p_id_tenacidade
                 WHERE (ar.selecionar = 1 OR (:p_id_arquivo <> 0 AND ap.id_arquivo = :p_id_arquivo))
                 AND ((ar.id_pessoa IS NOT NULL AND ar.id_pessoa = :p_id_usuario) OR ar.id_pessoa IS NULL)
-                ORDER BY pgml.embed(me.modelo, :p_question)::vector <=> ap.embed::vector
                 LIMIT 20
             ) ch
+            where ch.cosine_distance <= 0.36
+            order by ch.cosine_distance
         )
         select * from lista_contexto

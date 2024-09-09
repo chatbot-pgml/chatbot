@@ -1,6 +1,6 @@
 -- DROP FUNCTION chatbot.process_dialogue(int4, int4, int4, text, int4);
 
-CREATE OR REPLACE FUNCTION chatbot.process_dialogue(p_id_tenacidade integer, p_id_sessao integer, p_id_usuario integer, p_question text, p_id_arquivo integer DEFAULT 0)
+CREATE OR REPLACE FUNCTION chatbot.process_dialogue(p_id_tenacidade integer, p_id_sessao integer, p_id_pessoa integer, p_question text, p_id_arquivo integer DEFAULT 0)
  RETURNS text
  LANGUAGE plpgsql
 AS $function$
@@ -42,7 +42,7 @@ BEGIN
                 JOIN chatbot.arquivo ar ON ap.id_arquivo = ar.id_arquivo
                 JOIN modelo_embed me ON ap.id_tenacidade = p_id_tenacidade
                 WHERE (ar.selecionar = 1 OR (p_id_arquivo <> 0 AND ap.id_arquivo = p_id_arquivo))
-                AND ((ar.id_pessoa IS NOT NULL AND ar.id_pessoa = p_id_usuario) OR ar.id_pessoa IS NULL)
+                AND ((ar.id_pessoa IS NOT NULL AND ar.id_pessoa = p_id_pessoa) OR ar.id_pessoa IS NULL)
                 ORDER BY pgml.embed(me.modelo, p_question)::vector <=> ap.embed::vector
                 LIMIT 20
             ) ch
@@ -89,7 +89,6 @@ BEGIN
         SELECT 
             p_id_tenacidade AS tenacidade,
             p_id_sessao AS sessao,
-            p_id_usuario AS usuario,
             now() as dataagora,
             'U' AS direcao,
             '127.0.0.1',
@@ -102,7 +101,6 @@ BEGIN
         SELECT
             p_id_tenacidade,
             p_id_sessao,
-            p_id_usuario,
             now(),
             'A',
             '127.0.0.1',
@@ -121,7 +119,6 @@ BEGIN
         INSERT INTO chatbot.dialogo(
             id_tenacidade,
             id_sessao, 
-            id_pessoa,
             data_hora_mensagem,
             direcao,
             endereco_ip_auditoria,
@@ -133,7 +130,6 @@ BEGIN
         VALUES (
             rec.tenacidade,
             rec.sessao,
-            rec.usuario,
             rec.dataagora,
             rec.direcao,
             '127.0.0.1',
@@ -148,6 +144,7 @@ BEGIN
         IF rec.direcao = 'U' THEN
             -- Atualizar mensagem_texto para mensagens do usuário
         	v_mensagem_texto := replace(rec.mensagem, '\r', chr(13));
+			v_mensagem_texto := replace(rec.mensagem, '\t', chr(9));
         	v_mensagem_texto := replace(v_mensagem_texto, '<|start_header_id|>', '');
 			v_mensagem_texto := replace(v_mensagem_texto, 'user', '');        	
         	v_mensagem_texto := replace(v_mensagem_texto, '<|end_header_id|>', '');
